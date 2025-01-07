@@ -5,12 +5,8 @@ import (
 	"github.com/victorzhuk/homyak/web"
 )
 
+//nolint:unparam // ignore unparam
 func bootstrap(cfg *config) ([]worker, []initializer, []finalizer) {
-	var (
-		initializers []initializer
-		finalizers   []finalizer
-	)
-
 	static, err := web.NewStatic()
 	if err != nil {
 		panic(err)
@@ -24,5 +20,5 @@ func bootstrap(cfg *config) ([]worker, []initializer, []finalizer) {
 		cfg.APP.Feedback.FormURL,
 	)
 
-	return []worker{hs}, initializers, finalizers
+	return []worker{hs}, nil, nil
 }

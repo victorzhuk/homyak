@@ -24,7 +24,7 @@ type srv struct {
 	feedbackFormURL string
 }
 
-func New(static fs.FS, addr string, maxHeaderSize int, readTimeout time.Duration, writeTimeout time.Duration, feedbackFormURL string) *srv {
+func New(static fs.FS, addr string, maxHeaderSize int, readTimeout, writeTimeout time.Duration, feedbackFormURL string) *srv {
 	return &srv{
 		static:          static,
 		addr:            addr,
