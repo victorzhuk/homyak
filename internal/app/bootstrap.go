@@ -14,7 +14,7 @@ func bootstrap(cfg *config) ([]worker, []initializer, []finalizer) {
 	hs := httpsrv.New(
 		static,
 		cfg.APP.HTTP.Addr,
-		cfg.APP.HTTP.MaxHeaderSizeMb,
+		cfg.APP.HTTP.MaxHeaderSizeMb*(1<<20),
 		cfg.APP.HTTP.ReadTimeout,
 		cfg.APP.HTTP.WriteTimeout,
 		cfg.APP.Feedback.FormURL,

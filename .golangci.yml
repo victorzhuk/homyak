@@ -1,4 +1,5 @@
-# More info on config here: https://golangci-lint.run/usage/configuration/#config-file
+version: "2"
+
 run:
   timeout: 10m
   allow-parallel-runners: true
@@ -6,52 +7,13 @@ run:
   tests: true
 
 output:
-  print-issued-lines: true
-  print-linter-name: true
-
-linters-settings:
-  dupl:
-    threshold: 100
-  goconst:
-    min-len: 2
-    min-occurrences: 2
-  govet:
-    disable:
-      - fieldalignment
-  revive:
-    rules:
-      - name: unexported-return
-        disabled: true
-  gocritic:
-    enabled-tags:
-      - diagnostic
-      - experimental
-      - opinionated
-      - performance
-      - style
-    disabled-checks:
-      - hugeParam
-      - rangeExprCopy
-      - rangeValCopy
-      - commentedOutCode
-  errcheck:
-    check-type-assertions: true
-    check-blank: true
-  tagliatelle:
-    case:
-      rules:
-        json: snake
-        yaml: snake
-        xml: camel
-        bson: camel
-        avro: snake
-        mapstructure: kebab
-  cyclop:
-    max-complexity: 25
-    skip-tests: true
+  formats:
+    text:
+      print-issued-lines: true
+      print-linter-name: true
 
 linters:
-  disable-all: true
+  default: none
   enable:
     - cyclop
     - goconst
@@ -67,11 +29,8 @@ linters:
     - errorlint
     - gocritic
     - godot
-    - gofmt
-    - goimports
     - gomoddirectives
     - gosec
-    - gosimple
     - govet
     - ineffassign
     - misspell
@@ -88,9 +47,7 @@ linters:
     - rowserrcheck
     - sqlclosecheck
     - staticcheck
-    - stylecheck
     - tagliatelle
-    - tenv
     - testableexamples
     - thelper
     - tparallel
@@ -99,6 +56,55 @@ linters:
     - unused
     - usestdlibvars
     - wastedassign
+    # Note: gosimple, stylecheck, tenv are deprecated/merged in v2
+    # gosimple -> staticcheck (included)
+    # stylecheck -> staticcheck (included)
+    # tenv -> usetesting (use instead if needed)
+  settings:
+    dupl:
+      threshold: 100
+    goconst:
+      min-len: 2
+      min-occurrences: 2
+    govet:
+      disable:
+        - fieldalignment
+    revive:
+      rules:
+        - name: unexported-return
+          disabled: true
+    gocritic:
+      enabled-tags:
+        - diagnostic
+        - experimental
+        - opinionated
+        - performance
+        - style
+      disabled-checks:
+        - hugeParam
+        - rangeExprCopy
+        - rangeValCopy
+        - commentedOutCode
+    errcheck:
+      check-type-assertions: true
+      check-blank: true
+    tagliatelle:
+      case:
+        rules:
+          json: snake
+          yaml: snake
+          xml: camel
+          bson: camel
+          avro: snake
+          mapstructure: kebab
+    cyclop:
+      max-complexity: 25
+      skip-tests: true
+
+formatters:
+  enable:
+    - gofmt
+    - goimports
 
 issues:
   exclude-dirs:
