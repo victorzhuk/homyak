@@ -2,13 +2,13 @@
 
 ## Overview
 
-Extend GitHub Actions workflow to automatically deploy the homyak application to Kubernetes using Helm chart when code is pushed to the main branch.
+Extend GitHub Actions workflow to automatically deploy the homyak application to Kubernetes using Helm chart when code is pushed to the master branch.
 
 ## Requirements
 
 ### FR-1: Workflow Trigger
 **Given** a new GitHub Actions workflow for deployment
-**When** code is pushed to the main branch
+**When** code is pushed to the master branch
 **Then** the deployment workflow is triggered automatically
 
 ### FR-2: Kubernetes Authentication
@@ -65,7 +65,7 @@ name: deploy
 on:
   push:
     branches:
-      - main
+      - master
   workflow_dispatch:  # Allow manual trigger
 
 env:
@@ -165,7 +165,7 @@ The deployment workflow depends on:
 ### Deployment Sequence
 
 ```
-Push to main branch
+Push to master branch
          │
          ▼
 ┌─────────────────┐
@@ -205,7 +205,7 @@ helm rollback homyak --namespace homyak
 ```bash
 # Revert commit
 git revert <commit-hash>
-git push origin main
+git push origin master
 ```
 
 ### Testing the Workflow
@@ -228,7 +228,7 @@ helm upgrade --install --dry-run --debug homyak ./helm --namespace homyak
 
 ## Acceptance Criteria
 
-- [ ] Workflow triggers on push to main branch
+- [ ] Workflow triggers on push to master branch
 - [ ] KUBECONFIG_BASE64 secret is configured in GitHub
 - [ ] `kubectl cluster-info` succeeds in workflow
 - [ ] Helm upgrade completes without errors
