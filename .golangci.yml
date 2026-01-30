@@ -99,14 +99,8 @@ linters:
           mapstructure: kebab
     cyclop:
       max-complexity: 25
-      skip-tests: true
 
 formatters:
   enable:
     - gofmt
     - goimports
-
-issues:
-  exclude-dirs:
-    - tests
-    - tools
