@@ -33,10 +33,12 @@ func (srv *srv) feedbackFormRedirect(w http.ResponseWriter, r *http.Request) {
 
 func (srv *srv) healthzHandler(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
+	//nolint:gosec,errcheck // Health check response write failure is non-critical
 	w.Write([]byte("ok"))
 }
 
 func (srv *srv) readyzHandler(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
+	//nolint:gosec,errcheck // Health check response write failure is non-critical
 	w.Write([]byte("ready"))
 }
