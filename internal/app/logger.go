@@ -14,7 +14,7 @@ const (
 	logKeyMessage   = "message"
 )
 
-func SetupLogger(cfg *config) {
+func SetupLogger(cfg *Config) {
 	zc := zap.NewProductionEncoderConfig()
 	zc.TimeKey = logKeyTimestamp
 	zc.MessageKey = logKeyMessage
@@ -23,12 +23,12 @@ func SetupLogger(cfg *config) {
 
 	stdout := zapcore.AddSync(os.Stdout)
 	ce := zapcore.NewJSONEncoder(zc)
-	if cfg.APP.Env == EnvLocal {
+	if cfg.Env == EnvLocal {
 		ce = zapcore.NewConsoleEncoder(zc)
 	}
 
 	lvl := zapcore.InfoLevel
-	if cfg.APP.IsDebug {
+	if cfg.Debug {
 		lvl = zapcore.DebugLevel
 	}
 	core := zapcore.NewCore(ce, stdout, lvl)

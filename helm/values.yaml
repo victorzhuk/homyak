@@ -72,7 +72,7 @@ config:
   app:
     debug: false
     env: production
-    feedbackFormUrl: "https://victorzh.uk"
+    feedbackFormUrl: "https://forms.gle/LFXxyqy8oZacxetf7"
   http:
     addr: ":8080"
     maxHeaderSizeMb: 1

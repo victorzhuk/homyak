@@ -49,7 +49,7 @@ type app struct {
 	finalizers   []finalizer
 }
 
-func New(cfg *config) *app {
+func New(cfg *Config) *app {
 	logger.Debug("creating new app")
 
 	workers, initializers, finalizers := bootstrap(cfg)

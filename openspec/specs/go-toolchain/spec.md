@@ -42,7 +42,7 @@ module github.com/victorzhuk/homyak
 go 1.23
 
 require (
-    github.com/ilyakaznacheev/cleanenv v1.5.0
+    github.com/caarlos0/env/v11 v11.3.1
     go.uber.org/zap v1.27.0
     golang.org/x/sync v0.10.0
 )
@@ -61,7 +61,7 @@ tool (
 )
 
 require (
-    github.com/ilyakaznacheev/cleanenv v1.5.0  // check for updates
+    github.com/caarlos0/env/v11 v11.3.1        // env config library
     go.uber.org/zap v1.27.0                    // check for updates
     golang.org/x/sync v0.12.0                  // updated
 )

@@ -20,6 +20,7 @@ make test
 ### Deployment to Kubernetes
 
 Prerequisites:
+
 - Kubernetes cluster (kubespray-managed)
 - kubectl configured
 - Helm 3.x installed
@@ -84,16 +85,17 @@ The project uses GitHub Actions for:
 
 Application is configured via environment variables with `APP_` prefix:
 
-| Variable           | Description                          | Default    |
-|--------------------|--------------------------------------|------------|
-| `APP_LOG_LEVEL`    | Log level (debug, info, warn, error) | `info`     |
-| `APP_SERVER_PORT`  | HTTP server port                     | `8080`     |
-| `APP_DATABASE_URL` | Database connection string           | (required) |
-| `APP_API_KEY`      | API authentication key               | (required) |
+| Variable                      | Description                                  | Default                 |
+|-------------------------------|----------------------------------------------|-------------------------|
+| `APP_DEBUG`                   | Enable debug logging                         | `false`                 |
+| `APP_ENV`                     | Environment (local, development, production) | `local`                 |
+| `APP_HTTP_ADDR`               | HTTP server address                          | `:8080`                 |
+| `APP_HTTP_MAX_HEADER_SIZE_MB` | Max header size in MB                        | `1`                     |
+| `APP_HTTP_READ_TIMEOUT`       | HTTP read timeout                            | `3s`                    |
+| `APP_HTTP_WRITE_TIMEOUT`      | HTTP write timeout                           | `3s`                    |
+| `APP_FEEDBACK_FORM_URL`       | Feedback form redirect URL                   | `http://localhost:8080` |
 
-In Kubernetes, these are sourced from:
-- **ConfigMap** (`homyak-config`) - Non-sensitive config
-- **Secret** (`homyak-secret`) - Sensitive data
+Environment variables are loaded directly into the application (no ConfigMap/Secret required for this stateless app).
 
 ## Development
 
@@ -123,14 +125,7 @@ make lint
 
 ### Manual Deployment
 
-1. **Configure secrets**:
-   ```bash
-   kubectl create secret generic homyak-secret \
-     --from-literal=database-url="postgresql://..." \
-     --from-literal=api-key="your-api-key"
-   ```
-
-2. **Deploy**:
+1. **Deploy**:
    ```bash
    helm upgrade --install homyak ./helm \
      --namespace homyak \
@@ -148,6 +143,7 @@ make lint
 ### Automatic Deployment
 
 Push to `main` branch triggers:
+
 1. Docker image build and push
 2. Kubernetes deployment via Helm
 3. Rollout verification
@@ -228,7 +224,6 @@ See [docs/operations.md](docs/operations.md) for detailed troubleshooting.
 ## Contact
 
 - GitHub: https://github.com/victorzhuk/homyak
-- Email: victor@victorzh.uk
 - Website: https://victorzh.uk
 
 ## Contributing

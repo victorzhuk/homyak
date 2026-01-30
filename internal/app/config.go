@@ -5,58 +5,64 @@ import (
 	"io"
 	"time"
 
-	"github.com/ilyakaznacheev/cleanenv"
+	"github.com/caarlos0/env/v11"
 )
 
-var c config
+var c Config
 
-func MustParseConfig(configPath string) *config {
-	if configPath != "" {
-		err := cleanenv.ReadConfig(configPath, &c)
-		if err != nil {
-			panic(err)
-		}
-	} else {
-		err := cleanenv.ReadEnv(&c)
-		if err != nil {
-			panic(err)
-		}
+func MustParseConfig(_ string) *Config {
+	if err := env.Parse(&c); err != nil {
+		panic(err)
 	}
 
 	return &c
 }
 
 func PrintEnvsUsage(w io.Writer) {
-	description, err := cleanenv.GetDescription(c, nil)
+	_, err := fmt.Fprintln(w, "Environment variables:")
 	if err != nil {
 		panic(err)
 	}
 
-	_, err = fmt.Fprintln(w, description)
-	if err != nil {
-		panic(err)
+	vars := []struct {
+		name string
+		def  string
+		desc string
+	}{
+		{"APP_DEBUG", "false", "Enable debug mode"},
+		{"APP_ENV", "local", "Environment (local, development, production)"},
+		{"APP_HTTP_ADDR", ":8080", "HTTP server address"},
+		{"APP_HTTP_MAX_HEADER_SIZE_MB", "1", "Max header size in MB"},
+		{"APP_HTTP_READ_TIMEOUT", "3s", "Read timeout"},
+		{"APP_HTTP_WRITE_TIMEOUT", "3s", "Write timeout"},
+		{"APP_FEEDBACK_FORM_URL", "http://localhost:8080", "Feedback form URL"},
+	}
+
+	for _, v := range vars {
+		_, err := fmt.Fprintf(w, "  %-30s default: %-20s %s\n", v.name, v.def, v.desc)
+		if err != nil {
+			panic(err)
+		}
 	}
 }
 
-type config struct {
-	APP appCfg `yaml:"app" env-prefix:"APP_"`
+// Config holds application configuration.
+type Config struct {
+	Debug    bool   `env:"APP_DEBUG" envDefault:"false"`
+	Env      string `env:"APP_ENV" envDefault:"local"`
+	HTTP     HTTPConfig
+	Feedback FeedbackConfig
 }
 
-type appCfg struct {
-	IsDebug bool   `yaml:"debug" env:"DEBUG" env-default:"false"`
-	Env     string `yaml:"env" env:"ENV" env-default:"local"`
-
-	HTTP     httpCfg     `yaml:"http" env-prefix:"HTTP_"`
-	Feedback feedbackCfg `yaml:"feedback" env-prefix:"FEEDBACK_"`
+// HTTPConfig holds HTTP server configuration.
+type HTTPConfig struct {
+	Addr            string        `env:"APP_HTTP_ADDR" envDefault:":8080"`
+	MaxHeaderSizeMb int           `env:"APP_HTTP_MAX_HEADER_SIZE_MB" envDefault:"1"`
+	ReadTimeout     time.Duration `env:"APP_HTTP_READ_TIMEOUT" envDefault:"3s"`
+	WriteTimeout    time.Duration `env:"APP_HTTP_WRITE_TIMEOUT" envDefault:"3s"`
 }
 
-type httpCfg struct {
-	Addr            string        `yaml:"addr" env:"ADDR" env-default:":8080"`
-	MaxHeaderSizeMb int           `yaml:"max_header_size_mb" env:"MAX_HEADER_SIZE_MB" env-default:"1"`
-	ReadTimeout     time.Duration `yaml:"read_timeout" env:"READ_TIMEOUT" env-default:"3s"`
-	WriteTimeout    time.Duration `yaml:"write_timeout" env:"WRITE_TIMEOUT" env-default:"3s"`
-}
-
-type feedbackCfg struct {
-	FormURL string `yaml:"form_url" env:"FORM_URL" env-default:"http://localhost:8080"`
+// FeedbackConfig holds feedback form configuration.
+type FeedbackConfig struct {
+	FormURL string `env:"APP_FEEDBACK_FORM_URL" envDefault:"http://localhost:8080"`
 }
