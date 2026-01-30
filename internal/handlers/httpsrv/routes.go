@@ -30,3 +30,13 @@ func (srv *srv) staticHandler(w http.ResponseWriter, r *http.Request) {
 func (srv *srv) feedbackFormRedirect(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, srv.feedbackFormURL, http.StatusFound)
 }
+
+func (srv *srv) healthzHandler(w http.ResponseWriter, r *http.Request) {
+	w.WriteHeader(http.StatusOK)
+	w.Write([]byte("ok"))
+}
+
+func (srv *srv) readyzHandler(w http.ResponseWriter, r *http.Request) {
+	w.WriteHeader(http.StatusOK)
+	w.Write([]byte("ready"))
+}

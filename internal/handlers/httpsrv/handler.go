@@ -44,6 +44,8 @@ func (srv *srv) Start(ctx context.Context) error {
 	mux := http.NewServeMux()
 	mux.HandleFunc("/", srv.staticHandler)
 	mux.HandleFunc("/feedback", srv.feedbackFormRedirect)
+	mux.HandleFunc("/healthz", srv.healthzHandler)
+	mux.HandleFunc("/readyz", srv.readyzHandler)
 
 	ss := &http.Server{
 		Handler:        mux,
