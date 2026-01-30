@@ -33,11 +33,6 @@ jobs:
           echo "${{ secrets.KUBECONFIG_BASE64 }}" | base64 -d > "$RUNNER_TEMP/kubeconfig"
           echo "KUBECONFIG=$RUNNER_TEMP/kubeconfig" >> "$GITHUB_ENV"
 
-      - name: Verify cluster connection
-        run: |
-          kubectl cluster-info
-          kubectl get nodes
-
       - name: Generate image tag
         id: tag
         run: |
