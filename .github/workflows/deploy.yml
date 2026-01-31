@@ -64,6 +64,3 @@ jobs:
           echo "**Namespace:** ${{ vars.HELM_NAMESPACE }}" >> $GITHUB_STEP_SUMMARY
           echo "**Image:** ${{ steps.tag.outputs.sha_tag }}" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo '```' >> $GITHUB_STEP_SUMMARY
-          kubectl get all --namespace ${{ vars.HELM_NAMESPACE }} >> $GITHUB_STEP_SUMMARY
-          echo '```' >> $GITHUB_STEP_SUMMARY
