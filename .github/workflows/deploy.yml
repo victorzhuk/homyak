@@ -48,7 +48,7 @@ jobs:
             --set image.tag=${{ steps.tag.outputs.sha_tag }} \
             --set image.repository=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }} \
             --set ingress.host=${{ vars.DOMAIN }} \
-            --set config.app.feedbackFormUrl=https://${{ vars.DOMAIN }} \
+            --set config.app.feedbackFormUrl='${{ vars.FEEDBACK_FORM_URL }}' \
             --wait \
             --timeout 5m
 
